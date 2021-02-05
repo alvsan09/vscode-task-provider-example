@@ -25,6 +25,8 @@ export function getTestTasks(): Promise<vscode.Task[]> {
     tasks.push(getRebuildTask());
     tasks.push(getCleanTask());
     tasks.push(getNoneTask());
+    tasks.push(getCleanTaskGlobal());
+    tasks.push(getNoneTaskGlobal());
     return Promise.resolve(tasks);
 }
 
@@ -56,5 +58,16 @@ function getCleanTask(): vscode.Task {
 
 function getNoneTask(): vscode.Task {
     const task = new vscode.Task({ type: 'vince', task: 'vince-none-workspace' }, vscode.TaskScope.Workspace, 'vince-none', 'vince', new vscode.ShellExecution(`sleep 5; echo "Hello World - None"`));
+    return task;
+}
+
+function getCleanTaskGlobal(): vscode.Task {
+    const task = new vscode.Task({ type: 'vince', task: 'vince-clean-global' }, vscode.TaskScope.Global, 'vince-clean-global', 'vince', new vscode.ShellExecution(`sleep 5; echo "Hello World - Clean Global"`));
+    task.group = vscode.TaskGroup.Clean;
+    return task;
+}
+
+function getNoneTaskGlobal(): vscode.Task {
+    const task = new vscode.Task({ type: 'vince', task: 'vince-none-global' }, vscode.TaskScope.Global, 'vince-none-global', 'vince', new vscode.ShellExecution(`sleep 5; echo "Hello World - None Global"`));
     return task;
 }
