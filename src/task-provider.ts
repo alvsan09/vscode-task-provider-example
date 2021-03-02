@@ -20,8 +20,14 @@ export class TestTaskProvider implements vscode.TaskProvider {
 
 export function getTestTasks(): Promise<vscode.Task[]> {
     const tasks: vscode.Task[] = [];
-    tasks.push(getTestTask());
-    tasks.push(getBuildTask());
+    const workspaceFolders = vscode.workspace.workspaceFolders;
+    if (workspaceFolders) {
+        workspaceFolders.forEach(element => {
+            tasks.push(getTestTask(element));
+            tasks.push(getBuildTask(element));        
+        });
+    }
+
     tasks.push(getRebuildTask());
     tasks.push(getCleanTask());
     tasks.push(getNoneTask());
@@ -30,15 +36,13 @@ export function getTestTasks(): Promise<vscode.Task[]> {
     return Promise.resolve(tasks);
 }
 
-function getTestTask(): vscode.Task {
-    const workspaceFolder = vscode.workspace.workspaceFolders![0];
+function getTestTask(workspaceFolder: vscode.WorkspaceFolder): vscode.Task {
     const task = new vscode.Task({ type: 'vince', task: 'vince-test-folder' }, workspaceFolder, 'vince-test-folder', 'vince', new vscode.ShellExecution(`sleep 5; echo "Hello World - Test"`));
     task.group = vscode.TaskGroup.Test;
     return task;
 }
 
-function getBuildTask(): vscode.Task {
-    const workspaceFolder = vscode.workspace.workspaceFolders![0];
+function getBuildTask(workspaceFolder: vscode.WorkspaceFolder): vscode.Task {
     const task = new vscode.Task({ type: 'vince', task: 'vince-build-folder' }, workspaceFolder, 'vince-build-folder', 'vince', new vscode.ShellExecution(`sleep 5; echo "Hello World - Build"`));
     task.group = vscode.TaskGroup.Build;
     return task;
