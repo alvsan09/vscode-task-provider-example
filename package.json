@@ -2,7 +2,7 @@
     "name": "vscode-task-provider-example",
     "displayName": "vscode-task-provider-example",
     "description": "",
-    "version": "0.0.10",
+    "version": "0.0.11",
     "publisher": "vince-fugnitto",
     "engines": {
         "vscode": "^1.50.0"

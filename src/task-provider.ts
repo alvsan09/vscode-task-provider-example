@@ -38,6 +38,13 @@ export function getTestTasks(): Promise<vscode.Task[]> {
 
 function getTestTask(workspaceFolder: vscode.WorkspaceFolder): vscode.Task {
     const task = new vscode.Task({ type: 'vince', task: 'vince-test-folder' }, workspaceFolder, 'vince-test-folder', 'vince', new vscode.ShellExecution(`sleep 5; echo "Hello World - Test"`));
+    task.presentationOptions.reveal = vscode.TaskRevealKind.Always;
+    task.presentationOptions.focus = true;
+    task.presentationOptions.echo = false;
+    task.presentationOptions.showReuseMessage = false;
+    task.presentationOptions.panel = vscode.TaskPanelKind.Shared;
+    task.presentationOptions.clear = true;
+
     task.group = vscode.TaskGroup.Test;
     return task;
 }
